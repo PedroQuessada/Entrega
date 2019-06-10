@@ -1,4 +1,6 @@
 
+import java.util.ArrayList;
+
 import javax.swing.JOptionPane;
 
 public class Metodos {
@@ -6,6 +8,7 @@ public class Metodos {
 	private NoArvore noRaiz;
 	private int tamanho;
 	private String mensagem, titulo;
+	private ArrayList<Integer> vetor = new ArrayList<Integer>();
 	
 	public Metodos() {
 		noRaiz = null;
@@ -178,6 +181,65 @@ public class Metodos {
 	public boolean isEmpty() {
 		if(tamanho == 0) return true;
 		else return false;
+	}
+	
+    public void altura() {
+    	mensagem = "";
+		titulo = "Altura da arvore";
+		
+	    if(isEmpty()) mensagem += "Arvore Binaria Vazia";
+	    else {
+	    	int resp = calcularAltura(noRaiz);  
+	    	mensagem = "A altura é de: " + resp;
+	    }
+	    JOptionPane.showMessageDialog(null, mensagem, titulo,JOptionPane.PLAIN_MESSAGE);
+     }
+
+    public int calcularAltura(NoArvore no) {
+    	if(no == null) return -1;
+    	else {
+    		int alturaEsquerda = calcularAltura(no.getEsquerda());
+    		int alturaDireita = calcularAltura(no.getDireita());
+    		if(alturaEsquerda < alturaDireita) return alturaDireita + 1;
+    		else return alturaEsquerda + 1;
+    	}
+    }
+    
+    public void estritamenteBinaria() {
+    	mensagem = "";
+		titulo = "Verificacao estritamente binaria";
+		
+	    if(isEmpty()) mensagem += "Arvore Binaria Vazia";
+	    else {
+	    	int resp = verificarEstritamenteBinaria(noRaiz, 0, 0);  
+	    	if(resp == 0) {
+	    		mensagem = "A arvore binaria é estritamente binaria";
+	    	}
+	    	else if(resp == 1) {
+	    		mensagem = "A arvore binaria não é estritamente binaria";
+	    	}
+	    	else {
+	    		mensagem = "erro";
+	    	}
+	    	
+	    }
+	    JOptionPane.showMessageDialog(null, mensagem, titulo,JOptionPane.PLAIN_MESSAGE);
+     }
+	
+	public int verificarEstritamenteBinaria(NoArvore no, int contDireito, int contEsquerdo) {	
+		
+		if(no.getEsquerda() != null) {
+			return verificarEstritamenteBinaria(no.getEsquerda(), contDireito, contEsquerdo + 1);
+		}
+		if(no.getDireita() != null) {
+			return verificarEstritamenteBinaria(no.getDireita(), contDireito + 1, contEsquerdo);
+		}
+		
+		if((contEsquerdo - contDireito) < -1 || 
+		   (contEsquerdo - contDireito) > 1  || 
+		   (contDireito - contEsquerdo) < -1 || 
+		   (contDireito - contEsquerdo) > 1) return 1;
+		return 0;
 	}
 	
 }
